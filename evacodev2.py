@@ -37,11 +37,10 @@ for date, duration_hours, country in records:
     country_counts[country] += duration_hours
 
 sorted_country_counts = dict(sorted(country_counts.items(), key=lambda x:x[1], reverse=True))
-print(sorted_country_counts)
-#print the total hours for each country
+print('--------------------------------')
 for country in sorted_country_counts:
     print(f"Total hours for {country}: {sorted_country_counts[country]}")
-print(f"Total hours for total: {total_hours}")
+print(f"Total hours for total: {total_hours} \n --------------------------------")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))  # 1 row, 2 columns
 
