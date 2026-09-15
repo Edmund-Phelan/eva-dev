@@ -54,7 +54,7 @@ ax2.bar(sorted_country_counts.keys(), sorted_country_counts.values())
 ax2.set_xlabel("Country")
 ax2.set_ylabel("Cumulative EVA duration per country (hours)(Decending Order)")
 ax2.set_title("EVA duration by country")
-ax2.tick_params(axis="x", rotation=45)  # helps if country names overlap
+ax2.tick_params(axis="x", rotation=45) 
 
 fig.tight_layout()
 fig.savefig("images/cumulative_duration_combined.png")
