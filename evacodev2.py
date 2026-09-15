@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 import matplotlib.pyplot as plt
+from collections import Counter
+
 
 with open("eva-data.json", "r", encoding="utf-8") as file:
     eva_data = json.load(file)
@@ -27,20 +29,18 @@ records.sort(key=lambda record: record[0])
 dates = []
 total_hours = 0
 cumulative_hours_total = []
-country_counts = {'Russia': 0, 'USA': 0}
+country_counts = Counter()
 for date, duration_hours, country in records:
     total_hours += duration_hours
     dates.append(date)  
     cumulative_hours_total.append(total_hours)
-    if country == "Russia":
-        country_counts['Russia'] += duration_hours
-    elif country == "USA":
-        country_counts['USA'] += duration_hours
+    country_counts[country] += duration_hours
 
-
+sorted_country_counts = dict(sorted(country_counts.items(), key=lambda x:x[1], reverse=True))
+print(sorted_country_counts)
 #print the total hours for each country
-print(f"Total hours for Russia: {country_counts['Russia']}")
-print(f"Total hours for USA: {country_counts['USA']}")
+for country in sorted_country_counts:
+    print(f"Total hours for {country}: {sorted_country_counts[country]}")
 print(f"Total hours for total: {total_hours}")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))  # 1 row, 2 columns
@@ -50,12 +50,12 @@ ax1.set_xlabel("Year")
 ax1.set_ylabel("Cumulative EVA duration (hours)")
 ax1.set_title("Cumulative EVA duration")
 
-ax2.bar(country_counts.keys(), country_counts.values())
+ax2.bar(sorted_country_counts.keys(), sorted_country_counts.values())
 ax2.set_xlabel("Country")
-ax2.set_ylabel("Cumulative EVA duration per country (hours)")
+ax2.set_ylabel("Cumulative EVA duration per country (hours)(Decending Order)")
 ax2.set_title("EVA duration by country")
 ax2.tick_params(axis="x", rotation=45)  # helps if country names overlap
 
 fig.tight_layout()
-fig.savefig("cumulative_duration_combined.png")
+fig.savefig("images/cumulative_duration_combined.png")
 plt.show()
