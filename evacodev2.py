@@ -54,10 +54,17 @@ sorted_duration_counts = dict(sorted(duration_counts.items(), key=lambda x:x[1],
 
 #Display the total hours for each country and duration
 print('--------------------------------')
+print('Duation by country:')
+print('--------------------------------')
 for country in sorted_country_counts:
     print(f"Total hours for {country}: {sorted_country_counts[country]} \n")
+
+print('--------------------------------')
+print('Duation sizes:')
+print('--------------------------------')
 for duration in sorted_duration_counts:
     print(f"Total hours for {duration}: {sorted_duration_counts[duration]} \n")
+print('--------------------------------')
 print(f"Total hours for total: {total_hours} \n --------------------------------")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))  # 1 row, 2 columns
