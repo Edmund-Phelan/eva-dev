@@ -3,18 +3,16 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import Counter
 
-
-with open("eva-data.json", "r", encoding="utf-8") as file:
-    eva_data = json.load(file)
-
-records = []
-recordsRussia = []
-recordsUSA = []
-
 class Duration:
     SHORT = "SHORT"
     STANDARD = "STANDARD"
     LONG = "LONG"
+
+with open("eva-data.json", "r", encoding="utf-8") as file:
+    eva_data = json.load(file)
+
+
+records = []
 
 for eva in eva_data:
     date_text = eva.get("date")
@@ -42,6 +40,7 @@ total_hours = 0
 cumulative_hours_total = []
 country_counts = Counter()
 duration_counts = Counter()
+
 for date, duration_hours, country, duration in records:
     total_hours += duration_hours
     dates.append(date)  
@@ -51,6 +50,9 @@ for date, duration_hours, country, duration in records:
 
 sorted_country_counts = dict(sorted(country_counts.items(), key=lambda x:x[1], reverse=True))
 sorted_duration_counts = dict(sorted(duration_counts.items(), key=lambda x:x[1], reverse=True))
+
+
+#Display the total hours for each country and duration
 print('--------------------------------')
 for country in sorted_country_counts:
     print(f"Total hours for {country}: {sorted_country_counts[country]} \n")
