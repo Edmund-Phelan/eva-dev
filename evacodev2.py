@@ -25,12 +25,9 @@ for eva in eva_data:
     hours, minutes = map(int, duration_text.split(":"))
     duration_hours = hours + minutes / 60
 
-    if duration_hours < 4:
-        records.append((date, duration_hours, eva.get("country"), Duration.SHORT))
-    elif duration_hours < 7:
-        records.append((date, duration_hours, eva.get("country"), Duration.STANDARD))
-    elif duration_hours >= 7:
-        records.append((date, duration_hours, eva.get("country"), Duration.LONG))
+    duration_size = "SHORT" if duration_hours < 4 else "STANDARD" if duration_hours < 7 else "LONG"
+
+    records.append((date, duration_hours, eva.get("country"), duration_size))
     
 
 records.sort(key=lambda record: record[0])
