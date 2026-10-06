@@ -11,6 +11,11 @@ records = []
 recordsRussia = []
 recordsUSA = []
 
+class Duration:
+    SHORT = "SHORT"
+    STANDARD = "STANDARD"
+    LONG = "LONG"
+
 for eva in eva_data:
     date_text = eva.get("date")
     duration_text = eva.get("duration")
@@ -22,7 +27,13 @@ for eva in eva_data:
     hours, minutes = map(int, duration_text.split(":"))
     duration_hours = hours + minutes / 60
 
-    records.append((date, duration_hours, eva.get("country")))
+    if duration_hours < 4:
+        records.append((date, duration_hours, eva.get("country"), Duration.SHORT))
+    elif duration_hours < 7:
+        records.append((date, duration_hours, eva.get("country"), Duration.STANDARD))
+    elif duration_hours >= 7:
+        records.append((date, duration_hours, eva.get("country"), Duration.LONG))
+    
 
 records.sort(key=lambda record: record[0])
 
@@ -30,16 +41,21 @@ dates = []
 total_hours = 0
 cumulative_hours_total = []
 country_counts = Counter()
-for date, duration_hours, country in records:
+duration_counts = Counter()
+for date, duration_hours, country, duration in records:
     total_hours += duration_hours
     dates.append(date)  
     cumulative_hours_total.append(total_hours)
     country_counts[country] += duration_hours
+    duration_counts[duration] += duration_hours
 
 sorted_country_counts = dict(sorted(country_counts.items(), key=lambda x:x[1], reverse=True))
+sorted_duration_counts = dict(sorted(duration_counts.items(), key=lambda x:x[1], reverse=True))
 print('--------------------------------')
 for country in sorted_country_counts:
-    print(f"Total hours for {country}: {sorted_country_counts[country]}")
+    print(f"Total hours for {country}: {sorted_country_counts[country]} \n")
+for duration in sorted_duration_counts:
+    print(f"Total hours for {duration}: {sorted_duration_counts[duration]} \n")
 print(f"Total hours for total: {total_hours} \n --------------------------------")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))  # 1 row, 2 columns
